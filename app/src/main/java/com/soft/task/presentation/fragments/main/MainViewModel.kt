@@ -23,7 +23,8 @@ class MainViewModel @Inject constructor(private val mainRepo: MainRepo) : ViewMo
     private val _getGenreList= MutableStateFlow<Resource<BaseMovies>>(Resource.error(null,""))
     val getGenreList :StateFlow<Resource<BaseMovies>> =_getGenreList
 
-
+    private val _getSearchQuery= MutableStateFlow<Resource<BaseMovies>>(Resource.error(null,""))
+    val getSearchQuery :StateFlow<Resource<BaseMovies>> =_getSearchQuery
 
     fun getGenre()
     {
@@ -60,6 +61,23 @@ class MainViewModel @Inject constructor(private val mainRepo: MainRepo) : ViewMo
 
             }
 
+        }
+    }
+
+    fun getSearchQuery(query :String)
+    {
+        viewModelScope.launch {
+            _getSearchQuery.emit(Resource.loading(null))
+
+            mainRepo.getSearchQuery(query).collect{
+                if (it.results.isNotEmpty())
+                {
+                    _getSearchQuery.value=Resource.success(it)
+                }else{
+                    _getSearchQuery.value=Resource.error(it,"Search Is Empty")
+
+                }
+            }
         }
     }
 

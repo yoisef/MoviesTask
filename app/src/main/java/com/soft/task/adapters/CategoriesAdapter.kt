@@ -37,12 +37,12 @@ class CategoriesAdapter @Inject constructor (var movies: ArrayList<Movie>,val it
     }
 
 
-    fun updateDayListItems(newDays: List<com.soft.task.domain.models.Movie>) {
+    fun updateDayListItems(newMovies: List<Movie>) {
 
-        val diffCallback = UserDiffCallback(this.movies, newDays)
+        val diffCallback = UserDiffCallback(this.movies, newMovies)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         this.movies.clear()
-        this.movies.addAll(newDays)
+        this.movies.addAll(newMovies)
         diffResult.dispatchUpdatesTo(this)
 
 

@@ -31,6 +31,12 @@ class MainRepoImp @Inject constructor(private val endPoint: EndPoint?) : MainRep
             endPoint?.let { emit(it.getGenreList(genreID = genreId,"1",))
             }
     }
+
+    override fun getSearchQuery(query: String): Flow<BaseMovies> =
+        flow {
+            endPoint?.let { emit(it.searchMovie(query))
+            }
+        }
 }
 
 

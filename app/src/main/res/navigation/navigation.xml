@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_main_to_Movie_details"
             app:destination="@id/Movie_details" />
+        <action
+            android:id="@+id/action_main_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
     <fragment
         android:id="@+id/Movie_details"
@@ -27,5 +30,13 @@
         <argument
             android:name="movie"
             app:argType="com.soft.task.domain.models.Movie" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.soft.task.presentation.fragments.SearchFragment"
+        android:label="Search" >
+        <action
+            android:id="@+id/action_searchFragment_to_Movie_details"
+            app:destination="@id/Movie_details" />
     </fragment>
 </navigation>

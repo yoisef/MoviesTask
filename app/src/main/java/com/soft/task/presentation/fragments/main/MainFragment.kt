@@ -4,24 +4,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView.OnEditorActionListener
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayoutMediator
-import com.soft.task.adapters.CategoriesAdapter
+import com.soft.task.R
 import com.soft.task.adapters.GenreViewPagerAdapter
 import com.soft.task.databinding.FragmentMainBinding
-import com.soft.task.domain.repository.MainRepo
 import com.soft.task.presentation.fragments.CategoryFragment
 import com.soft.task.utils.Status
+import com.soft.task.utils.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -39,7 +42,7 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, com.soft.task.R.layout.fragment_main, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
 
 
         initialization()
@@ -74,6 +77,7 @@ class MainFragment : Fragment() {
                     when(genres.status)
                     {
                         Status.SUCCESS ->{
+                            binding.progressBar.visibility=View.GONE
 
                             val tabsNames= arrayListOf<String>()
                             if (genres.data?.genres!!.isNotEmpty())
@@ -88,7 +92,7 @@ class MainFragment : Fragment() {
                                         fragmentObject.arguments=bundle
 
                                         gAdapter.addFragment(fragmentObject)
-                                        tabsNames.add(genres.data?.genres[i].name)
+                                        genres.data?.genres[i].name?.let { it1 -> tabsNames.add(it1) }
 
                                     }
                                     setupViewPager(tabsNames)
@@ -100,9 +104,11 @@ class MainFragment : Fragment() {
 
                         }
                         Status.ERROR ->{
+                            binding.progressBar.visibility=View.GONE
 
                         }
                         Status.LOADING -> {
+                            binding.progressBar.visibility=View.VISIBLE
 
 
                         }
@@ -116,6 +122,15 @@ class MainFragment : Fragment() {
 
     }
 
+    private fun searchAction()
+    {
+        val query : String=binding.searchFieldMain.text.toString()
+        val bundle = bundleOf( Pair("query", query))
+
+        binding.searchFieldMain.hideKeyboard()
+
+        findNavController().navigate(R.id.action_main_to_searchFragment,bundle)
+    }
     private fun initialization()
     {
         viewModel.getGenre()
@@ -123,14 +138,18 @@ class MainFragment : Fragment() {
         gAdapter = GenreViewPagerAdapter(fragmentManager = childFragmentManager, lifecycle)
 
 
-        // add Fragments in your ViewPagerFragmentAdapter class
+        binding.searchBtn.setOnClickListener {
 
-        // add Fragments in your ViewPagerFragmentAdapter class
+            searchAction()
+        }
 
-
-        // set Orientation in your ViewPager2
-
-        // set Orientation in your ViewPager2
+        binding.searchFieldMain.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+               searchAction()
+                return@OnEditorActionListener true
+            }
+            false
+        })
 
     }
 

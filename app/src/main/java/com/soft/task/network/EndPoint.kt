@@ -18,5 +18,7 @@ interface EndPoint {
     @GET("genre/{genre_id}/movies?")
     suspend fun getGenreList(@Path("genre_id") genreID: String?, @Query("page") currentPage: String?): BaseMovies
 
+    @GET("search/movie?")
+    suspend fun searchMovie(@Query("query") searchQuery: String?, @Query("page") currentPage: String?="1",@Query("include_adult") adult :Boolean=false): BaseMovies
 
 }
