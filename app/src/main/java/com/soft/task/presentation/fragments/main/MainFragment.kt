@@ -133,11 +133,12 @@ class MainFragment : Fragment() {
     }
     private fun initialization()
     {
+        //get genres
         viewModel.getGenre()
-
         gAdapter = GenreViewPagerAdapter(fragmentManager = childFragmentManager, lifecycle)
 
 
+        //handle Search Actions
         binding.searchBtn.setOnClickListener {
 
             searchAction()
@@ -166,12 +167,8 @@ class MainFragment : Fragment() {
 
 
         binding.tabDots.tabMode = TabLayout.MODE_SCROLLABLE
-
-
         binding.pager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-
         binding.tabDots.layoutDirection = View.LAYOUT_DIRECTION_LTR
-
         binding.pager.adapter = gAdapter
 
         TabLayoutMediator(binding.tabDots, binding.pager) { tab, position ->

@@ -14,18 +14,18 @@ interface MovieDao {
     fun getSavedCities() :LiveData<List<Movie>>
 
     @Query("SELECT * FROM movies")
-    suspend fun getCities() : List<Movie>
+    suspend fun getMovies() : List<Movie>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCity(cities : Movie)
+    suspend fun insertMovie(movies : Movie)
 
 
     @Query("DELETE FROM movies")
-    suspend fun deleteAllCities()
+    suspend fun deleteAllMovies()
 
-    /*
-    @Query("SELECT * FROM movies WHERE name LIKE :name || '%'")
-    suspend fun searchCity(name:String): Movie
 
-     */
+    @Query("SELECT * FROM movies WHERE title LIKE :name || '%'")
+    suspend fun searchMovie(name:String): Movie
+
+
 }
