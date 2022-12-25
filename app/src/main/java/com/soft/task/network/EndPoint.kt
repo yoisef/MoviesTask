@@ -1,0 +1,22 @@
+package com.soft.task.network
+
+
+import com.soft.task.domain.models.BaseGenre
+import com.soft.task.domain.models.BaseMovies
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
+
+
+interface EndPoint {
+
+
+    @GET("genre/movie/list")
+   suspend fun getGenre( ): BaseGenre
+
+
+    @GET("genre/{genre_id}/movies?")
+    suspend fun getGenreList(@Path("genre_id") genreID: String?, @Query("page") currentPage: String?): BaseMovies
+
+
+}
