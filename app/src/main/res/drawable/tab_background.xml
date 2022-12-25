@@ -12,7 +12,7 @@
             <stroke android:color="@color/black"
                 android:width="1dp"/>
             <solid android:color="@color/white"/>
-            <corners android:radius="25dp"/>
+            <corners android:radius="10dp"/>
 
 
         </shape>
@@ -30,7 +30,7 @@
             <stroke android:color="@color/white"
                 android:width="1dp"/>
             <solid android:color="@color/purple_200"/>
-            <corners android:radius="25dp"/>
+            <corners android:radius="10dp"/>
 
 
 

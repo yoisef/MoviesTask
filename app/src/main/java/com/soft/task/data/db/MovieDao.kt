@@ -7,7 +7,7 @@ import com.soft.task.domain.models.Movie
 
 
 @Dao
-interface CityDao {
+interface MovieDao {
 
 
     @Query("SELECT * FROM movies")
